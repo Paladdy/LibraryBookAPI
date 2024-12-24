@@ -42,7 +42,7 @@ class BookService:
     # ---------------------------UPDATE ONE
 
     async def update_a_book(self, book_uid:str, update_data:BookUpdateModel, session:AsyncSession):
-        book_to_update = self.get_a_book(book_uid, session)
+        book_to_update = await self.get_a_book(book_uid, session)
         update_data_dict = update_data.model_dump()
 
         if book_to_update is not None:

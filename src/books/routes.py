@@ -42,7 +42,7 @@ async def create_a_book(book_data: BookCreateModel, session: AsyncSession = Depe
 
 
 # ----PATCH ONE
-@books_router.patch("/{book_uid}", status_code=status.HTTP_202_ACCEPTED)
+@books_router.patch("/{book_uid}", status_code=status.HTTP_202_ACCEPTED, response_model=Book)
 async def update_a_book(book_uid: str, book_update_data: BookUpdateModel,
                         session: AsyncSession = Depends(get_session)) -> dict:
     updated_book = await book_service.update_a_book(book_uid, book_update_data, session)
