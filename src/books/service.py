@@ -1,7 +1,10 @@
+#-----------------А
 from sqlmodel.ext.asyncio.session import AsyncSession
+#-----------------
 from .schemas import BookCreateModel, BookUpdateModel
 from sqlmodel import select, desc
 from .models import Book
+from datetime import datetime
 
 class BookService:
     # ---------------------------GET ALL
@@ -24,10 +27,17 @@ class BookService:
 
     async def create_a_book(self, book_data:BookCreateModel, session:AsyncSession):
         book_data_dict = book_data.model_dump()
-        new_book = Book(**book_data_dict)
-        session.add(new_book)
+
+        new_book = Book(**book_data_dict) # Наподобе __init__ создаем параметры для экземпляра new_book
+
+
+        new_book.published_date = datetime.strptime(book_data_dict["published_date"], "%Y-%m-%d")
+
+        session.add(new_book) # Добавляем объект в тип данных session.
+
         await session.commit() # INSERT INTO
-        return new_book # Возвращаем книгу на полку, после того, как создали, чтобы могли другие
+
+        return new_book # Возвращаем книгу на полку, после того, как создали, чтобы могли использовать в других модулях
 
     # ---------------------------UPDATE ONE
 
@@ -42,9 +52,22 @@ class BookService:
             await session.commit()
 
             return book_to_update
+        else:
+            return None
 
     # ---------------------------DELETE ONE
 
     async def delete_a_book(self, book_uid:str, session:AsyncSession):
-        pass
+        book_to_delete = self.get_a_book(book_uid, session)
+
+        if book_to_delete is not None:
+            await session.delete(book_to_delete)
+
+            await session.commit()
+
+            return {}
+
+        else:
+            return None
+
 

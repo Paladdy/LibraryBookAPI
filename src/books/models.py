@@ -1,7 +1,11 @@
+
 from datetime import datetime, date
 from sqlmodel import SQLModel, Field, Column
 import sqlalchemy.dialects.postgresql as pg
 import uuid # Уникальный идентификатор товара для поиска
+
+# Создаем метаданные комбинацией SQLAlchemy и SQLModel
+# Добавляем в наш SQLModel (metadata) метадату о нашей модели. Кэшируем инфу о моделях в класс SQLmodel.
 
 class Book(SQLModel, table=True):
     __tablename__ = "books"

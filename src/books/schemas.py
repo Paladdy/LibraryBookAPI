@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 # Модели данных, которые возвращаются или принимаются от пользователя
 
 class Book(BaseModel):
@@ -8,7 +8,7 @@ class Book(BaseModel):
     title: str
     author: str
     description: str
-    published_date: str
+    published_date: date
     price: int
     language: str
     created_at: datetime
@@ -18,6 +18,7 @@ class BookCreateModel(BaseModel):
     title: str
     author: str
     description: str
+    published_date: str
     price: int
     language: str
 
