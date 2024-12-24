@@ -21,7 +21,7 @@ async def db_init(): # Инициализируем подключение к Б
         await connection.run_sync(SQLModel.metadata.create_all) # Создаем все таблицы из models.py
 
 
-#---------Создаем сессию для БД чтобы можно было выполнять к ней запросы
+#---------Создаем саму сессию для БД чтобы можно было выполнять к ней запросы
 async def get_session() -> AsyncSession:
 
     Session = sessionmaker(
@@ -32,7 +32,8 @@ async def get_session() -> AsyncSession:
 
     # Пока играем с игрушкой, когда наиграемся - кладем, но потом снова можем играть
     async with Session() as session:
-        yield session
+        yield session # Передается только тем функциям, которые ее запрашивают. механизм с yield - инжекция зависимостей.
+                      # Вне вызова через другие функции не работает
 
 
 

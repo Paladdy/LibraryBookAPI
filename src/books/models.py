@@ -35,5 +35,5 @@ class Book(SQLModel, table=True):
 
 
     def __repr__(self):
-        return f"<BOOK {self.title}>"
+        return f"<Book {self.title}>"
 

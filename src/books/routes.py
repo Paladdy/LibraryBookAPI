@@ -13,17 +13,18 @@ book_service = BookService()
 
 # ----GET ALL
 @books_router.get('/', response_model=List[Book])
-async def get_all_books(session: AsyncSession = Depends(get_session)):
-    books = await book_service.get_all_books(session)
+async def get_all_books(session: AsyncSession = Depends(get_session)): # Запрашиваем из service = yield session
+    books = await book_service.get_all_books(session) # Вызываем сервис из service.py #В параметр session передается сессия БД
     return books
 
+# Вообщем то используем инжектор для того, чтобы в каждом эндпойнте не создавать заново сессию для БД
 
 # ----GET ONE
-@books_router.get('/{book_uid}')
-async def get_a_book(book_uid: int, session: AsyncSession = Depends(get_session)) -> dict:
+@books_router.get('/{book_uid}', response_model=Book)
+async def get_a_book(book_uid: str, session: AsyncSession = Depends(get_session)) -> dict:
     book = await book_service.get_a_book(book_uid, session)
     if book:
-        return
+        return book
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -42,7 +43,7 @@ async def create_a_book(book_data: BookCreateModel, session: AsyncSession = Depe
 
 # ----PATCH ONE
 @books_router.patch("/{book_uid}", status_code=status.HTTP_202_ACCEPTED)
-async def update_a_book(book_uid: int, book_update_data: BookUpdateModel,
+async def update_a_book(book_uid: str, book_update_data: BookUpdateModel,
                         session: AsyncSession = Depends(get_session)) -> dict:
     updated_book = await book_service.update_a_book(book_uid, book_update_data, session)
 
@@ -56,7 +57,7 @@ async def update_a_book(book_uid: int, book_update_data: BookUpdateModel,
 
 # ----DELETE ONE
 @books_router.delete("/{book_uid}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_a_book(book_uid: int, session: AsyncSession = Depends(get_session)):
+async def delete_a_book(book_uid: str, session: AsyncSession = Depends(get_session)):
     book_to_delete = await book_service.delete_a_book(book_uid, session)
 
     if book_to_delete:
