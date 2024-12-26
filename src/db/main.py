@@ -4,6 +4,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 
+
 # Создаем движок на основе config.py
 engine = create_async_engine(
     url=Config.DATABASE_URL,

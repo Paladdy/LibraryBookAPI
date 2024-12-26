@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from src.books.routes import books_router
 from contextlib import asynccontextmanager
 from src.db.main import db_init
-from greenlet import greenlet
 
 # Отслеживаем подключение к бд
 @asynccontextmanager
