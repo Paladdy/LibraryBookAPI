@@ -47,10 +47,11 @@ async def update_a_book(book_uid: str, book_update_data: BookUpdateModel,
                         session: AsyncSession = Depends(get_session)) -> dict:
     updated_book = await book_service.update_a_book(book_uid, book_update_data, session)
 
-    if updated_book:
-        return updated_book
-    else:
+    if updated_book is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Book not found')
+    else:
+        return updated_book
+
 
 
 
@@ -60,10 +61,11 @@ async def update_a_book(book_uid: str, book_update_data: BookUpdateModel,
 async def delete_a_book(book_uid: str, session: AsyncSession = Depends(get_session)):
     book_to_delete = await book_service.delete_a_book(book_uid, session)
 
-    if book_to_delete:
-        return {}
-    else:
+    if book_to_delete is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Book not found')
+    else:
+        return {}
+
 
 
 
