@@ -58,7 +58,7 @@ class BookService:
     # ---------------------------DELETE ONE
 
     async def delete_a_book(self, book_uid:str, session:AsyncSession):
-        book_to_delete = self.get_a_book(book_uid, session)
+        book_to_delete = await self.get_a_book(book_uid, session)
 
         if book_to_delete is not None:
             await session.delete(book_to_delete)
